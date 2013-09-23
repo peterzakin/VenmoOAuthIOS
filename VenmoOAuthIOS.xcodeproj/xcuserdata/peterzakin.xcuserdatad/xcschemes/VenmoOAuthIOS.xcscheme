@@ -38,6 +38,16 @@
                ReferencedContainer = "container:VenmoOAuthIOS.xcodeproj">
             </BuildableReference>
          </TestableReference>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "1B32570717F1074C00CEE3C2"
+               BuildableName = "VenmoOauthAppTests.xctest"
+               BlueprintName = "VenmoOauthAppTests"
+               ReferencedContainer = "container:VenmoOAuthIOS.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
       </Testables>
    </TestAction>
    <LaunchAction

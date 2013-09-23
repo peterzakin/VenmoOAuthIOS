@@ -9,6 +9,11 @@
 			<key>orderHint</key>
 			<integer>0</integer>
 		</dict>
+		<key>VenmoOauthApp.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>1</integer>
+		</dict>
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
@@ -18,6 +23,16 @@
 			<true/>
 		</dict>
 		<key>1B3256C417F0FCDA00CEE3C2</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>1B3256EA17F1074C00CEE3C2</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>1B32570717F1074C00CEE3C2</key>
 		<dict>
 			<key>primary</key>
 			<true/>
