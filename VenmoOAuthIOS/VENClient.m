@@ -14,11 +14,11 @@
 
 
 + (VENAuthViewController *)OAuthViewControllerWithClientID:(NSString *)clientID
-                                         clientSecret:(NSString *)clientSecret
-                                               scopes:(NSSet *)scopes
+                                              clientSecret:(NSString *)clientSecret
+                                                    scopes:(NSSet *)scopes
                                               responseType:(VENResponseType)responseType
                                                redirectURL:(NSURL *)redirectURL
-                                             delegate:(id<VENAuthViewControllerDelegate>)delegate
+                                                  delegate:(id<VENAuthViewControllerDelegate>)delegate
 {
     VENAuthViewController *authViewController = [[VENAuthViewController alloc] initWithClientId:clientID clientSecret:clientSecret scopes:scopes reponseType:responseType redirectURL:redirectURL delegate:delegate];
 

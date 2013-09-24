@@ -3,15 +3,6 @@
 
 @interface VENAuthViewController ()
 
-@property (strong, nonatomic) UIWebView *webView;
-
-@property (strong, nonatomic) NSString* clientId;
-@property (strong, nonatomic) NSString* clientSecret;
-@property (strong, nonatomic) NSSet *scopes;
-@property (assign, nonatomic) VENResponseType responseType;
-@property (strong, nonatomic) NSURL *redirectURL;
-
-
 @end
 
 @implementation VENAuthViewController
@@ -51,8 +42,14 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-
-    self.webView = [[UIWebView alloc] initWithFrame:self.view.bounds];
+    self.view.backgroundColor = [UIColor whiteColor];
+    
+    CGFloat statusBarHeight = [UIApplication sharedApplication].statusBarFrame.size.height;
+    CGRect webViewFrame = CGRectMake(0,
+                                     statusBarHeight,
+                                     self.view.bounds.size.width,
+                                     self.view.bounds.size.height - statusBarHeight);
+    self.webView = [[UIWebView alloc] initWithFrame:webViewFrame];
     self.webView.delegate = self;
     [self.view addSubview:self.webView];
     NSURL *authorizationURL = [self authorizationURL];

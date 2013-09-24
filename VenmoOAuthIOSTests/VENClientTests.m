@@ -1,12 +1,9 @@
-//
-//  VENClientTest.m
-//  VenmoOAuthIOS
-//
-//  Created by Ben Guo on 9/24/13.
-//  Copyright (c) 2013 Venmo. All rights reserved.
-//
-
 #import <XCTest/XCTest.h>
+#import "VENClient.h"
+#define HC_SHORTHAND
+#import <OCHamcrestIOS/OCHamcrestIOS.h>
+#define MOCKITO_SHORTHAND
+#import <OCMockitoIOS/OCMockitoIOS.h>
 
 @interface VENClientTests : XCTestCase
 
@@ -26,9 +23,31 @@
     [super tearDown];
 }
 
-- (void)testExtractTokenFromServerSideFlow
+- (void)testOAuthViewControllerWithClientID
 {
-    
+    NSSet *scopes = [NSSet setWithArray:@[@"make_payments"]];
+    VENResponseType responseType = VENResponseTypeCode;
+    NSURL *redirectURL = [NSURL URLWithString:REDIRECT_URL];
+
+    UIViewController <VENAuthViewControllerDelegate> *controller =
+    mockObjectAndProtocol([UIViewController class], @protocol(VENAuthViewControllerDelegate));
+
+    VENAuthViewController *authVC = [VENClient OAuthViewControllerWithClientID:CLIENT_ID
+                                                                  clientSecret:CLIENT_SECRET
+                                                                        scopes:scopes
+                                                                  responseType:responseType
+                                                                   redirectURL:redirectURL
+                                                                      delegate:controller];
+    [authVC viewDidLoad];
+    assertThat(CLIENT_ID, equalTo(authVC.clientId));
+    assertThat(CLIENT_SECRET, equalTo(authVC.clientSecret));
+    assert([scopes isEqualToSet:authVC.scopes]);
+    assert(responseType == authVC.responseType);
+    assertThat(redirectURL, equalTo(authVC.redirectURL));
+    assertThat(authVC.webView, notNilValue());
+
+
 }
+
 
 @end
