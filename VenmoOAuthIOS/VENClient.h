@@ -9,10 +9,20 @@
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 
+
+@protocol VENAuthViewControllerDelegate;
+
+@class VENAuthViewController;
+
 @interface VENClient : NSObject
 
-+ (UIViewController *)OAuthViewControllerWithClientID:(NSString *)clientID
-                                         clientSecret:(NSString *)clientSecret
-                                               scopes:(NSSet *)scopes;
++ (VENClient *)sharedClient;
++ (VENAuthViewController *)OAuthViewControllerWithClientID:(NSString *)clientID
+                                              clientSecret:(NSString *)clientSecret
+                                                    scopes:(NSSet *)scopes
+                                              responseType:(NSString *)responseType
+                                               redirectURL:(NSURL *)redirectURL
+                                                  delegate:(id<VENAuthViewControllerDelegate>)delegate;
++ (NSURL *)authorizationURLWithClientID;
 
 @end

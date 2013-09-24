@@ -23,7 +23,6 @@
 		1B3256F517F1074C00CEE3C2 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 1B3256F317F1074C00CEE3C2 /* InfoPlist.strings */; };
 		1B3256F717F1074C00CEE3C2 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B3256F617F1074C00CEE3C2 /* main.m */; };
 		1B3256FB17F1074C00CEE3C2 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B3256FA17F1074C00CEE3C2 /* AppDelegate.m */; };
-		1B32570117F1074C00CEE3C2 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B32570017F1074C00CEE3C2 /* ViewController.m */; };
 		1B32570317F1074C00CEE3C2 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1B32570217F1074C00CEE3C2 /* Images.xcassets */; };
 		1B32570917F1074C00CEE3C2 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1B3256C617F0FCDA00CEE3C2 /* XCTest.framework */; };
 		1B32570A17F1074C00CEE3C2 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1B3256B817F0FCDA00CEE3C2 /* Foundation.framework */; };
@@ -31,6 +30,8 @@
 		1B32571317F1074C00CEE3C2 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 1B32571117F1074C00CEE3C2 /* InfoPlist.strings */; };
 		1B32571517F1074C00CEE3C2 /* VenmoOauthAppTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B32571417F1074C00CEE3C2 /* VenmoOauthAppTests.m */; };
 		1B32571E17F1077000CEE3C2 /* libVenmoOAuthIOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1B3256B517F0FCDA00CEE3C2 /* libVenmoOAuthIOS.a */; };
+		EB409F6A17F1F46F004EA769 /* ExampleViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EB409F6817F1F46F004EA769 /* ExampleViewController.m */; };
+		EB409F6B17F1F46F004EA769 /* ExampleViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = EB409F6917F1F46F004EA769 /* ExampleViewController.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -92,13 +93,14 @@
 		1B3256F817F1074C00CEE3C2 /* VenmoOauthApp-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "VenmoOauthApp-Prefix.pch"; sourceTree = "<group>"; };
 		1B3256F917F1074C00CEE3C2 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		1B3256FA17F1074C00CEE3C2 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
-		1B3256FF17F1074C00CEE3C2 /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
-		1B32570017F1074C00CEE3C2 /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
 		1B32570217F1074C00CEE3C2 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		1B32570817F1074C00CEE3C2 /* VenmoOauthAppTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = VenmoOauthAppTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		1B32571017F1074C00CEE3C2 /* VenmoOauthAppTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "VenmoOauthAppTests-Info.plist"; sourceTree = "<group>"; };
 		1B32571217F1074C00CEE3C2 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		1B32571417F1074C00CEE3C2 /* VenmoOauthAppTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = VenmoOauthAppTests.m; sourceTree = "<group>"; };
+		EB409F6717F1F46F004EA769 /* ExampleViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ExampleViewController.h; sourceTree = "<group>"; };
+		EB409F6817F1F46F004EA769 /* ExampleViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ExampleViewController.m; sourceTree = "<group>"; };
+		EB409F6917F1F46F004EA769 /* ExampleViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ExampleViewController.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -220,10 +222,11 @@
 		1B3256F017F1074C00CEE3C2 /* VenmoOauthApp */ = {
 			isa = PBXGroup;
 			children = (
+				EB409F6717F1F46F004EA769 /* ExampleViewController.h */,
+				EB409F6817F1F46F004EA769 /* ExampleViewController.m */,
+				EB409F6917F1F46F004EA769 /* ExampleViewController.xib */,
 				1B3256F917F1074C00CEE3C2 /* AppDelegate.h */,
 				1B3256FA17F1074C00CEE3C2 /* AppDelegate.m */,
-				1B3256FF17F1074C00CEE3C2 /* ViewController.h */,
-				1B32570017F1074C00CEE3C2 /* ViewController.m */,
 				1B32570217F1074C00CEE3C2 /* Images.xcassets */,
 				1B3256F117F1074C00CEE3C2 /* Supporting Files */,
 			);
@@ -385,6 +388,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				1B32570317F1074C00CEE3C2 /* Images.xcassets in Resources */,
+				EB409F6B17F1F46F004EA769 /* ExampleViewController.xib in Resources */,
 				1B3256F517F1074C00CEE3C2 /* InfoPlist.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -421,7 +425,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1B32570117F1074C00CEE3C2 /* ViewController.m in Sources */,
+				EB409F6A17F1F46F004EA769 /* ExampleViewController.m in Sources */,
 				1B3256FB17F1074C00CEE3C2 /* AppDelegate.m in Sources */,
 				1B3256F717F1074C00CEE3C2 /* main.m in Sources */,
 			);
@@ -722,6 +726,7 @@
 				1B3256DA17F0FCDA00CEE3C2 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		1B3256DB17F0FCDA00CEE3C2 /* Build configuration list for PBXNativeTarget "VenmoOAuthIOSTests" */ = {
 			isa = XCConfigurationList;
@@ -730,6 +735,7 @@
 				1B3256DD17F0FCDA00CEE3C2 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		1B32571617F1074C00CEE3C2 /* Build configuration list for PBXNativeTarget "VenmoOauthApp" */ = {
 			isa = XCConfigurationList;
@@ -738,6 +744,7 @@
 				1B32571817F1074C00CEE3C2 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		1B32571917F1074C00CEE3C2 /* Build configuration list for PBXNativeTarget "VenmoOauthAppTests" */ = {
 			isa = XCConfigurationList;
@@ -746,6 +753,7 @@
 				1B32571B17F1074C00CEE3C2 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

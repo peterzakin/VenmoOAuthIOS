@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>825545FB-0931-4C3F-9050-06E9B6C3FF77</string>
+	<key>IDESourceControlProjectName</key>
+	<string>VenmoOAuthIOS</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>01F436B8-996F-4BBC-B237-8D9CCC87D05E</key>
+		<string>https://github.com/peterzakin/VenmoOAuthIOS.git</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>VenmoOAuthIOS.xcodeproj/project.xcworkspace</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>01F436B8-996F-4BBC-B237-8D9CCC87D05E</key>
+		<string>../..</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>https://github.com/peterzakin/VenmoOAuthIOS.git</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>110</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>01F436B8-996F-4BBC-B237-8D9CCC87D05E</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>01F436B8-996F-4BBC-B237-8D9CCC87D05E</string>
+			<key>IDESourceControlWCCName</key>
+			<string>VenmoOAuthIOS</string>
+		</dict>
+	</array>
+</dict>
+</plist>
