@@ -11,5 +11,6 @@
 #import "VENAuthViewController.h"
 
 @interface ExampleViewController : UIViewController <VENAuthViewControllerDelegate>
+@property (weak, nonatomic) IBOutlet UILabel *accessTokenLabel;
 
 @end

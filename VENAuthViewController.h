@@ -33,7 +33,7 @@
 @protocol VENAuthViewControllerDelegate
 
 - (void)authViewController:(VENAuthViewController *)authViewController
-         finishedWithGrant:(NSString *)grant
+   finishedWithAccessToken:(NSString *)accessToken
                      error:(NSError *)error;
 
 @end

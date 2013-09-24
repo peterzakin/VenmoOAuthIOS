@@ -1,5 +1,3 @@
-#define BASE_URL @"https://venmo.com/"
-
 #import "VENAuthViewController.h"
 #import <UIKit/UIKit.h>
 
@@ -47,7 +45,7 @@
 {
     NSString *scopes = [self.scopes.allObjects componentsJoinedByString:@","];
     return [NSURL URLWithString:[NSString stringWithFormat:@"%@oauth/authorize?client_id=%@&scope=%@&response_type=%@",
-                                 BASE_URL, self.clientId, scopes, [VENAuthViewController stringForResponseType:self.responseType]]];
+                                 API_BASE_URL, self.clientId, scopes, [VENAuthViewController stringForResponseType:self.responseType]]];
 }
 
 - (void)viewDidLoad
@@ -81,19 +79,22 @@
             accessToken = [queryString stringByReplacingOccurrencesOfString:@"access_token=" withString:@""];
         // Server-side flow:
         } else if (self.responseType == VENResponseTypeCode) {
-            NSString *code = [queryString stringByReplacingOccurrencesOfString:@"?code=" withString:@""];
+            NSString *code = [queryString stringByReplacingOccurrencesOfString:@"code=" withString:@""];
             NSString *url = [NSString stringWithFormat:@"%@oauth/access_token?client_id=%@&client_secret=%@&code=%@",
-                                   BASE_URL, self.clientId, self.clientSecret, code];
-            NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:url]
-                                                        cachePolicy:NSURLRequestUseProtocolCachePolicy
-                                                    timeoutInterval:10.0];
+                                   API_BASE_URL, self.clientId, self.clientSecret, code];
+            NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:url]
+                                                                   cachePolicy:NSURLRequestUseProtocolCachePolicy
+                                                              timeoutInterval :10.0];
+            [request setHTTPMethod:@"POST"];
             NSURLResponse *response = nil;
             NSError *error = nil;
             NSData *data = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&error];
             if (!error) {
-
+                NSDictionary *json = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:&error];
+                if (!error) accessToken = [json objectForKey:@"access_token"];
             }
         }
+        [self.delegate authViewController:self finishedWithAccessToken:accessToken error:error];
         return NO;
     }
     return YES;

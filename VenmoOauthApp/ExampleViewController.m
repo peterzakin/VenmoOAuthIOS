@@ -41,10 +41,18 @@
                                                                   clientSecret:@"H537ZNzLZufvwApCbgQEpqhBYjBjbmtD"
                                                                         scopes:[NSSet setWithArray:@[@"make_payments",
                                                                                                      @"access_profile"]]
-                                                                  responseType:VENResponseTypeToken
+                                                                  responseType:VENResponseTypeCode
                                                                    redirectURL:[NSURL URLWithString:@"http://strangelines.com"]
                                                                       delegate:self];
     [self presentViewController:(UIViewController *)authVC animated:YES completion:nil];
+}
+
+#pragma mark - VENAuthViewControllerDelegate
+
+- (void)authViewController:(VENAuthViewController *)authViewController finishedWithAccessToken:(NSString *)accessToken error:(NSError *)error
+{
+    [authViewController dismissViewControllerAnimated:YES completion:nil];
+    [[self accessTokenLabel] setText:accessToken];
 }
 
 @end
