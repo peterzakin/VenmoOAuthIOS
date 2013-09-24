@@ -37,7 +37,13 @@
 }
 
 - (IBAction)logInButtonAction:(id)sender {
-    VENAuthViewController *authVC = [VENClient OAuthViewControllerWithClientID:@"bla" clientSecret:@"bla" scopes:[NSSet setWithArray:@[@"bla"]] responseType:@"bla" redirectURL:[NSURL URLWithString:@"http://bla.com"] delegate:self];
+    VENAuthViewController *authVC = [VENClient OAuthViewControllerWithClientID:@"1405"
+                                                                  clientSecret:@"H537ZNzLZufvwApCbgQEpqhBYjBjbmtD"
+                                                                        scopes:[NSSet setWithArray:@[@"make_payments",
+                                                                                                     @"access_profile"]]
+                                                                  responseType:VENResponseTypeToken
+                                                                   redirectURL:[NSURL URLWithString:@"http://strangelines.com"]
+                                                                      delegate:self];
     [self presentViewController:(UIViewController *)authVC animated:YES completion:nil];
 }
 

@@ -101,6 +101,7 @@
 		EB409F6717F1F46F004EA769 /* ExampleViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ExampleViewController.h; sourceTree = "<group>"; };
 		EB409F6817F1F46F004EA769 /* ExampleViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ExampleViewController.m; sourceTree = "<group>"; };
 		EB409F6917F1F46F004EA769 /* ExampleViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ExampleViewController.xib; sourceTree = "<group>"; };
+		EB409F6C17F21B8C004EA769 /* VENDefines.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VENDefines.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -184,6 +185,7 @@
 		1B3256BA17F0FCDA00CEE3C2 /* VenmoOAuthIOS */ = {
 			isa = PBXGroup;
 			children = (
+				EB409F6C17F21B8C004EA769 /* VENDefines.h */,
 				1B3256E417F1045D00CEE3C2 /* VENAuthViewController.h */,
 				1B3256E517F1045D00CEE3C2 /* VENAuthViewController.m */,
 				1B3256BD17F0FCDA00CEE3C2 /* VENClient.h */,

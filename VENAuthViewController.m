@@ -10,7 +10,7 @@
 @property (strong, nonatomic) NSString* clientId;
 @property (strong, nonatomic) NSString* clientSecret;
 @property (strong, nonatomic) NSSet *scopes;
-@property (strong, nonatomic) NSString *responseType;
+@property (assign, nonatomic) VENResponseType responseType;
 @property (strong, nonatomic) NSURL *redirectURL;
 
 
@@ -18,10 +18,16 @@
 
 @implementation VENAuthViewController
 
++ (NSString *)stringForResponseType:(VENResponseType)responseType
+{
+    return (responseType == VENResponseTypeCode) ? @"code" : @"token";
+}
+
+
 - (id)initWithClientId:(NSString *)clientId
           clientSecret:(NSString *)clientSecret
                 scopes:(NSSet *)scopes
-           reponseType:(NSString *)responseType
+           reponseType:(VENResponseType)responseType
            redirectURL:(NSURL *)redirectURL
               delegate:(id<VENAuthViewControllerDelegate>)delegate
 {
@@ -40,7 +46,8 @@
 - (NSURL *)authorizationURL
 {
     NSString *scopes = [self.scopes.allObjects componentsJoinedByString:@","];
-    return [NSURL URLWithString:[NSString stringWithFormat:@"%@oauth/authorize?client_id=%@&scope=%@&response_type=%@", BASE_URL, self.clientId, scopes, self.responseType]];
+    return [NSURL URLWithString:[NSString stringWithFormat:@"%@oauth/authorize?client_id=%@&scope=%@&response_type=%@",
+                                 BASE_URL, self.clientId, scopes, [VENAuthViewController stringForResponseType:self.responseType]]];
 }
 
 - (void)viewDidLoad
@@ -66,7 +73,27 @@
 {
     NSString *host = request.URL.host;
     if ([host isEqualToString:self.redirectURL.host]) {
-        
+        NSString *queryString = request.URL.query;
+        NSString *accessToken = nil;
+        NSError *error = nil;
+        // Client-side flow: just grab the access token
+        if (self.responseType == VENResponseTypeToken) {
+            accessToken = [queryString stringByReplacingOccurrencesOfString:@"access_token=" withString:@""];
+        // Server-side flow:
+        } else if (self.responseType == VENResponseTypeCode) {
+            NSString *code = [queryString stringByReplacingOccurrencesOfString:@"?code=" withString:@""];
+            NSString *url = [NSString stringWithFormat:@"%@oauth/access_token?client_id=%@&client_secret=%@&code=%@",
+                                   BASE_URL, self.clientId, self.clientSecret, code];
+            NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:url]
+                                                        cachePolicy:NSURLRequestUseProtocolCachePolicy
+                                                    timeoutInterval:10.0];
+            NSURLResponse *response = nil;
+            NSError *error = nil;
+            NSData *data = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&error];
+            if (!error) {
+
+            }
+        }
         return NO;
     }
     return YES;
