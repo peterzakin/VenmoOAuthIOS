@@ -9,6 +9,9 @@
 
 @property (readonly, nonatomic, strong) NSURL *baseURL;
 
+// The operation queue which manages operations enqueued by the HTTP client.
+@property (readonly, nonatomic, strong) NSOperationQueue *operationQueue;
+
 + (VENClient *)sharedClient;
 + (VENAuthViewController *)OAuthViewControllerWithClientID:(NSString *)clientID
                                               clientSecret:(NSString *)clientSecret

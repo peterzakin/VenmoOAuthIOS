@@ -4,6 +4,7 @@
 @interface VENClient ()
 
 @property (readwrite, nonatomic, strong) NSURL *baseURL;
+@property (readwrite, nonatomic, strong) NSOperationQueue *operationQueue;
 
 @end
 
@@ -37,6 +38,8 @@ NSString *queryStringFromParameters(NSDictionary *parameters) {
     dispatch_once(&onceToken, ^{
         _sharedClient = [[self alloc] init];
         _sharedClient.baseURL = [NSURL URLWithString:API_BASE_URL];
+        _sharedClient.operationQueue = [[NSOperationQueue alloc] init];
+        [_sharedClient.operationQueue setMaxConcurrentOperationCount:NSOperationQueueDefaultMaxConcurrentOperationCount];
     });
     return _sharedClient;
 }
@@ -78,6 +81,22 @@ NSString *queryStringFromParameters(NSDictionary *parameters) {
 	return request;
 }
 
+- (void)sendAsyncRequest:(NSURLRequest *)request
+       completionHandler:(void(^)(NSURLResponse *response, NSDictionary *json, NSError *connectionError))handler
+{
+    [NSURLConnection sendAsynchronousRequest:request
+                                       queue:self.operationQueue
+                           completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError) {
+                               NSDictionary *json = nil;
+                               NSError *error = nil;
+                               if (!connectionError){
+                                   json = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:&error];
+                               } else {
+                                   error = connectionError;
+                               }
+                               handler(response,json,error);
+                           }];
+}
 
 
 @end
