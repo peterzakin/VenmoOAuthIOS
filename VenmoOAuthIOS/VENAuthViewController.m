@@ -61,8 +61,8 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    self.view.backgroundColor = [UIColor lightGrayColor];
-    
+    self.view.backgroundColor = [UIColor whiteColor];
+
     CGFloat statusBarHeight = [UIApplication sharedApplication].statusBarFrame.size.height;
     CGRect webViewFrame = CGRectMake(0,
                                      statusBarHeight,
