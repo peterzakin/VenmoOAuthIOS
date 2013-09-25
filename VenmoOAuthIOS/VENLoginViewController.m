@@ -1,11 +1,11 @@
-#import "VENAuthViewController_Internal.h"
+#import "VENLoginViewController.h"
 #import <UIKit/UIKit.h>
 
-@interface VENAuthViewController ()
+@interface VENLoginViewController ()
 
 @end
 
-@implementation VENAuthViewController
+@implementation VENLoginViewController
 
 + (NSString *)stringForResponseType:(VENResponseType)responseType
 {
@@ -53,9 +53,9 @@
 
 - (NSURL *)authorizationURL
 {
-    NSString *scopesString = [VENAuthViewController stringForScopes:self.scopes];
+    NSString *scopesString = [VENLoginViewController stringForScopes:self.scopes];
     return [NSURL URLWithString:[NSString stringWithFormat:@"%@oauth/authorize?client_id=%@&scope=%@&response_type=%@",
-                                 API_BASE_URL, self.clientId, scopesString, [VENAuthViewController stringForResponseType:self.responseType]]];
+                                 API_BASE_URL, self.clientId, scopesString, [VENLoginViewController stringForResponseType:self.responseType]]];
 }
 
 - (void)viewDidLoad
@@ -110,7 +110,7 @@
                 if (!error) accessToken = [json objectForKey:@"access_token"];
             }
         }
-        [self.delegate authViewController:self finishedWithAccessToken:accessToken error:error];
+        [self.delegate loginViewController:self finishedWithAccessToken:accessToken error:error];
         return NO;
     }
     return YES;

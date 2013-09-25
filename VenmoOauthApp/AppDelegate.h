@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "VENAuthViewController.h"
+#import "VENLoginViewController.h"
 
 @interface AppDelegate : UIResponder <UIApplicationDelegate>
 

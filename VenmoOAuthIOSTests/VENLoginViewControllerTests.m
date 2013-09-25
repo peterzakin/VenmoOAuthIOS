@@ -1,32 +1,32 @@
 #import <XCTest/XCTest.h>
 #import "VENDefines.h"
 #import "VENTestBase.h"
-#import "VENAuthViewController_Internal.h"
+#import "VENLoginViewController.h"
 #define TEST_TOKEN @"1234"
 
-@interface VENAuthViewControllerTests : XCTestCase
+@interface VENLoginViewControllerTests : XCTestCase
 
-@property (nonatomic, strong) VENAuthViewController *tokenAuthVC;
-@property (nonatomic, strong) VENAuthViewController *codeAuthVC;
+@property (nonatomic, strong) VENLoginViewController *tokenAuthVC;
+@property (nonatomic, strong) VENLoginViewController *codeAuthVC;
 @property (nonatomic, strong) UIViewController <VENAuthViewControllerDelegate> *mockAuthDelegate;
 
 @end
 
-@implementation VENAuthViewControllerTests
+@implementation VENLoginViewControllerTests
 
 - (void)setUp
 {
     [super setUp];
 
 
-    self.mockAuthDelegate = mockObjectAndProtocol([UIViewController class], @protocol(VENAuthViewControllerDelegate));
-    self.tokenAuthVC = [[VENAuthViewController alloc] initWithClientId:CLIENT_ID
+    self.mockAuthDelegate = mockObjectAndProtocol([UIViewController class], @protocol(VENLoginViewControllerDelegate));
+    self.tokenAuthVC = [[VENLoginViewController alloc] initWithClientId:CLIENT_ID
                                                       clientSecret:CLIENT_SECRET
                                                             scopes:SCOPES
                                                        reponseType:VENResponseTypeToken
                                                        redirectURL:REDIRECT_URL
                                                           delegate:self.mockAuthDelegate];
-    self.codeAuthVC = [[VENAuthViewController alloc] initWithClientId:CLIENT_ID
+    self.codeAuthVC = [[VENLoginViewController alloc] initWithClientId:CLIENT_ID
                                                           clientSecret:CLIENT_SECRET
                                                                 scopes:SCOPES
                                                            reponseType:VENResponseTypeCode
@@ -43,25 +43,25 @@
 
 - (void)testStringForResponseType
 {
-    NSString *s1 = [VENAuthViewController stringForResponseType:VENResponseTypeToken];
+    NSString *s1 = [VENLoginViewController stringForResponseType:VENResponseTypeToken];
     EXP_expect(s1).to.equal(@"token");
-    NSString *s2 = [VENAuthViewController stringForResponseType:0];
+    NSString *s2 = [VENLoginViewController stringForResponseType:0];
     EXP_expect(s2).to.equal(@"token");
-    NSString *s3 = [VENAuthViewController stringForResponseType:VENResponseTypeCode];
+    NSString *s3 = [VENLoginViewController stringForResponseType:VENResponseTypeCode];
     EXP_expect(s3).to.equal(@"code");
 }
 
 - (void)testStringForScopes
 {
-    NSString *s1 = [VENAuthViewController stringForScopes:VENAccessScopeNone];
+    NSString *s1 = [VENLoginViewController stringForScopes:VENAccessScopeNone];
     EXP_expect(s1).to.equal(@"");
-    NSString *s2 = [VENAuthViewController stringForScopes:VENAccessScopeFeed];
+    NSString *s2 = [VENLoginViewController stringForScopes:VENAccessScopeFeed];
     EXP_expect(s2).to.equal(@"access_feed");
-    NSString *s3 = [VENAuthViewController stringForScopes:(VENAccessScopeFeed | VENAccessScopeProfile)];
+    NSString *s3 = [VENLoginViewController stringForScopes:(VENAccessScopeFeed | VENAccessScopeProfile)];
     EXP_expect(s3).to.equal(@"access_feed,access_profile");
-    NSString *s4 = [VENAuthViewController stringForScopes:(VENAccessScopeFeed | VENAccessScopeProfile | VENAccessScopePayments)];
+    NSString *s4 = [VENLoginViewController stringForScopes:(VENAccessScopeFeed | VENAccessScopeProfile | VENAccessScopePayments)];
     EXP_expect(s4).to.equal(@"access_feed,access_profile,make_payments");
-    NSString *s5 = [VENAuthViewController stringForScopes:(VENAccessScopeFeed | VENAccessScopeProfile | VENAccessScopeFriends | VENAccessScopePayments)];
+    NSString *s5 = [VENLoginViewController stringForScopes:(VENAccessScopeFeed | VENAccessScopeProfile | VENAccessScopeFriends | VENAccessScopePayments)];
     EXP_expect(s5).to.equal(@"access_feed,access_friends,access_profile,make_payments");
 }
 
@@ -79,9 +79,9 @@
 
 - (void)testAuthorizationURL
 {
-    NSString *scopesString = [VENAuthViewController stringForScopes:self.tokenAuthVC.scopes];
+    NSString *scopesString = [VENLoginViewController stringForScopes:self.tokenAuthVC.scopes];
     NSString *authURLString = [NSString stringWithFormat:@"%@oauth/authorize?client_id=%@&scope=%@&response_type=%@",
-                               API_BASE_URL, self.tokenAuthVC.clientId, scopesString, [VENAuthViewController stringForResponseType:self.tokenAuthVC.responseType]];
+                               API_BASE_URL, self.tokenAuthVC.clientId, scopesString, [VENLoginViewController stringForResponseType:self.tokenAuthVC.responseType]];
     EXP_expect([self.tokenAuthVC authorizationURL]).to.equal([NSURL URLWithString:authURLString]);
 }
 
@@ -105,13 +105,13 @@
     NSString *requestString = [NSString stringWithFormat:@"%@/?access_token=%@", self.tokenAuthVC.redirectURL, TEST_TOKEN];
     NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:requestString]];
     [self.tokenAuthVC webView:self.tokenAuthVC.webView shouldStartLoadWithRequest:request navigationType:UIWebViewNavigationTypeOther];
-    [verify(self.mockAuthDelegate) authViewController:self.tokenAuthVC finishedWithAccessToken:TEST_TOKEN error:nil];
+    [verify(self.mockAuthDelegate) loginViewController:self.tokenAuthVC finishedWithAccessToken:TEST_TOKEN error:nil];
 
     // VENResponseTypeCode
     NSString *requestString2 = [NSString stringWithFormat:@"%@/?code=%@", self.codeAuthVC.redirectURL, TEST_TOKEN];
     NSURLRequest *request2 = [NSURLRequest requestWithURL:[NSURL URLWithString:requestString2]];
     [self.codeAuthVC webView:self.codeAuthVC.webView shouldStartLoadWithRequest:request2 navigationType:UIWebViewNavigationTypeOther];
-    [verify(self.mockAuthDelegate) authViewController:self.codeAuthVC finishedWithAccessToken:(NSString *)anything() error:nil];
+    [verify(self.mockAuthDelegate) loginViewController:self.codeAuthVC finishedWithAccessToken:(NSString *)anything() error:nil];
 }
 
 @end

@@ -37,7 +37,7 @@
 }
 
 - (IBAction)logInButtonAction:(id)sender {
-    VENAuthViewController *authVC = [VENClient OAuthViewControllerWithClientID:CLIENT_ID
+    VENLoginViewController *authVC = [VENClient OAuthViewControllerWithClientID:CLIENT_ID
                                                                   clientSecret:CLIENT_SECRET
                                                                         scopes:VENAccessScopeFriends | VENAccessScopeProfile | VENAccessScopeFriends | VENAccessScopePayments
                                                                   responseType:VENResponseTypeToken
@@ -48,7 +48,7 @@
 
 #pragma mark - VENAuthViewControllerDelegate
 
-- (void)authViewController:(VENAuthViewController *)authViewController finishedWithAccessToken:(NSString *)accessToken error:(NSError *)error
+- (void)authViewController:(VENLoginViewController *)authViewController finishedWithAccessToken:(NSString *)accessToken error:(NSError *)error
 {
     [authViewController dismissViewControllerAnimated:YES completion:nil];
     [[self accessTokenLabel] setText:accessToken];

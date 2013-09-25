@@ -1,7 +1,7 @@
 #import <XCTest/XCTest.h>
 #import "VENTestBase.h"
 #import "VENClient_Internal.h"
-#import "VENAuthViewController_Internal.h"
+#import "VENLoginViewController.h"
 
 @interface VENClientTests : XCTestCase
 
@@ -14,7 +14,7 @@
 - (void)setUp
 {
     [super setUp];
-    self.client = [VENClient sharedClient];
+    self.client = [[VENClient alloc] initWithClientID:CLIENT_ID clientSecret:CLIENT_SECRET scopes:SCOPES responseType:VENResponseTypeCode redirectURL:REDIRECT_URL delegate:nil];
 }
 
 - (void)tearDown
@@ -22,24 +22,26 @@
     [super tearDown];
 }
 
-- (void)testSharedClient
+- (void)testInit
 {
-    EXP_expect(self.client).toNot.beNil;
-    EXP_expect(self.client.baseURL).to.equal([NSURL URLWithString:API_BASE_URL]);
-    VENClient *client2 = [VENClient sharedClient];
-    EXP_expect(self.client).to.equal(client2);
-    EXP_expect(client2.baseURL).to.equal([NSURL URLWithString:API_BASE_URL]);
+    VENClient *client = [[VENClient alloc] initWithClientID:CLIENT_ID clientSecret:CLIENT_SECRET scopes:SCOPES responseType:VENResponseTypeCode redirectURL:REDIRECT_URL delegate:nil];
+    EXP_expect(client.clientID).to.equal(CLIENT_ID);
+    EXP_expect(client.clientSecret).to.equal(CLIENT_SECRET);
+    EXP_expect(client.scopes).to.equal(SCOPES);
+    EXP_expect(client.responseType).to.equal(VENResponseTypeCode);
+    EXP_expect(client.redirectURL).to.equal(REDIRECT_URL);
+    EXP_expect(client.delegate).to.beNil;
 }
 
 - (void)testOAuthViewControllerInitialization
 {
-    VENAuthViewController *authVC = [VENClient OAuthViewControllerWithClientID:CLIENT_ID clientSecret:CLIENT_SECRET scopes:SCOPES responseType:VENResponseTypeCode redirectURL:REDIRECT_URL delegate:nil];
-    EXP_expect(authVC.clientId).to.equal(CLIENT_ID);
-    EXP_expect(authVC.clientSecret).to.equal(CLIENT_SECRET);
-    EXP_expect(authVC.scopes).to.equal(SCOPES);
-    EXP_expect(authVC.responseType).to.equal(VENResponseTypeCode);
-    EXP_expect(authVC.redirectURL).to.equal(REDIRECT_URL);
-    EXP_expect(authVC.delegate).to.beNil;
+    VENLoginViewController *loginVC = [VENClient OAuthViewControllerWithClientID:CLIENT_ID clientSecret:CLIENT_SECRET scopes:SCOPES responseType:VENResponseTypeCode redirectURL:REDIRECT_URL delegate:nil];
+    EXP_expect(loginVC.clientId).to.equal(CLIENT_ID);
+    EXP_expect(loginVC.clientSecret).to.equal(CLIENT_SECRET);
+    EXP_expect(loginVC.scopes).to.equal(SCOPES);
+    EXP_expect(loginVC.responseType).to.equal(VENResponseTypeCode);
+    EXP_expect(loginVC.redirectURL).to.equal(REDIRECT_URL);
+    EXP_expect(loginVC.delegate).to.beNil;
 }
 
 - (void)testRequestWithMethod_basic

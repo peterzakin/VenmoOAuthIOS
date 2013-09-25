@@ -8,9 +8,9 @@
 
 #import <UIKit/UIKit.h>
 
-#import "VENAuthViewController.h"
+#import "VENLoginViewController.h"
 
-@interface ExampleViewController : UIViewController <VENAuthViewControllerDelegate>
+@interface ExampleViewController : UIViewController <VENLoginViewControllerDelegate>
 @property (weak, nonatomic) IBOutlet UILabel *accessTokenLabel;
 
 @end
