@@ -39,10 +39,9 @@
 - (IBAction)logInButtonAction:(id)sender {
     VENAuthViewController *authVC = [VENClient OAuthViewControllerWithClientID:CLIENT_ID
                                                                   clientSecret:CLIENT_SECRET
-                                                                        scopes:[NSSet setWithArray:@[@"make_payments",
-                                                                                                     @"access_profile"]]
+                                                                        scopes:VENAccessScopeFriends | VENAccessScopeProfile | VENAccessScopeFriends | VENAccessScopePayments
                                                                   responseType:VENResponseTypeToken
-                                                                   redirectURL:[NSURL URLWithString:REDIRECT_URL]
+                                                                   redirectURL:REDIRECT_URL
                                                                       delegate:self];
     [self presentViewController:(UIViewController *)authVC animated:YES completion:nil];
 }

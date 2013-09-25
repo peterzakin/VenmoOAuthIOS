@@ -1,6 +1,6 @@
 //
 //  OCMockito - MKTAtLeastTimes.m
-//  Copyright 2012 Jonathan M. Reid. See LICENSE.txt
+//  Copyright 2013 Jonathan M. Reid. See LICENSE.txt
 //  
 //  Created by Markus Gasser on 18.04.12.
 //  Source: https://github.com/jonreid/OCMockito
@@ -18,12 +18,12 @@
     NSUInteger _minimumExpectedCount;
 }
 
-+ (id)timesWithMinimumCount:(NSUInteger)minimumExpectedNumberOfInvocations
++ (instancetype)timesWithMinimumCount:(NSUInteger)minimumExpectedNumberOfInvocations
 {
     return [[self alloc] initWithMinimumCount:minimumExpectedNumberOfInvocations];
 }
 
-- (id)initWithMinimumCount:(NSUInteger)minimumExpectedNumberOfInvocations
+- (instancetype)initWithMinimumCount:(NSUInteger)minimumExpectedNumberOfInvocations
 {
     self = [super init];
     if (self)

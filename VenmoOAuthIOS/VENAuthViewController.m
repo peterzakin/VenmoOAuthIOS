@@ -12,10 +12,28 @@
     return (responseType == VENResponseTypeCode) ? @"code" : @"token";
 }
 
++ (NSSet *)setForScopes:(VENAccessScope)scopes
+{
+    NSMutableSet *set = [NSMutableSet setWithCapacity:4];
+    if (scopes & VENAccessScopeFeed) {
+        [set addObject:@"access_feed"];
+    }
+    if (scopes & VENAccessScopeProfile) {
+        [set addObject:@"access_profile"];
+    }
+    if (scopes & VENAccessScopeFriends) {
+        [set addObject:@"access_friends"];
+    }
+    if (scopes & VENAccessScopePayments) {
+        [set addObject:@"make_payments"];
+    }
+    return set;
+}
+
 
 - (id)initWithClientId:(NSString *)clientId
           clientSecret:(NSString *)clientSecret
-                scopes:(NSSet *)scopes
+                scopes:(VENAccessScope)scopes
            reponseType:(VENResponseType)responseType
            redirectURL:(NSURL *)redirectURL
               delegate:(id<VENAuthViewControllerDelegate>)delegate
@@ -34,9 +52,10 @@
 
 - (NSURL *)authorizationURL
 {
-    NSString *scopes = [self.scopes.allObjects componentsJoinedByString:@","];
+    NSSet *scopesSet = [VENAuthViewController setForScopes:self.scopes];
+    NSString *scopesString = [scopesSet.allObjects componentsJoinedByString:@","];
     return [NSURL URLWithString:[NSString stringWithFormat:@"%@oauth/authorize?client_id=%@&scope=%@&response_type=%@",
-                                 API_BASE_URL, self.clientId, scopes, [VENAuthViewController stringForResponseType:self.responseType]]];
+                                 API_BASE_URL, self.clientId, scopesString, [VENAuthViewController stringForResponseType:self.responseType]]];
 }
 
 - (void)viewDidLoad

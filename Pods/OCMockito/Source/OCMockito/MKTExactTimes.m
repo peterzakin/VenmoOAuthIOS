@@ -1,6 +1,6 @@
 //
 //  OCMockito - MKTExactTimes.m
-//  Copyright 2012 Jonathan M. Reid. See LICENSE.txt
+//  Copyright 2013 Jonathan M. Reid. See LICENSE.txt
 //
 //  Created by: Jon Reid, http://qualitycoding.org/
 //  Source: https://github.com/jonreid/OCMockito
@@ -12,7 +12,6 @@
 #import "MKTInvocationMatcher.h"
 #import "MKTTestLocation.h"
 #import "MKTVerificationData.h"
-#import "MKTException.h"
 
 
 // As of 2010-09-09, the iPhone simulator has a bug where you can't catch exceptions when they are
@@ -29,12 +28,12 @@
     NSUInteger expectedCount;
 }
 
-+ (id)timesWithCount:(NSUInteger)expectedNumberOfInvocations
++ (instancetype)timesWithCount:(NSUInteger)expectedNumberOfInvocations
 {
     return [[self alloc] initWithCount:expectedNumberOfInvocations];
 }
 
-- (id)initWithCount:(NSUInteger)expectedNumberOfInvocations
+- (instancetype)initWithCount:(NSUInteger)expectedNumberOfInvocations
 {
     self = [super init];
     if (self)

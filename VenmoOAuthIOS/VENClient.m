@@ -1,4 +1,5 @@
 #import "VENClient.h"
+#import "VENAuthViewController_Internal.h"
 
 @implementation VENClient
 
@@ -12,17 +13,16 @@
     return _sharedClient;
 }
 
-
 + (VENAuthViewController *)OAuthViewControllerWithClientID:(NSString *)clientID
                                               clientSecret:(NSString *)clientSecret
-                                                    scopes:(NSSet *)scopes
+                                                    scopes:(VENAccessScope)scopes
                                               responseType:(VENResponseType)responseType
                                                redirectURL:(NSURL *)redirectURL
                                                   delegate:(id<VENAuthViewControllerDelegate>)delegate
 {
-    VENAuthViewController *authViewController = [[VENAuthViewController alloc] initWithClientId:clientID clientSecret:clientSecret scopes:scopes reponseType:responseType redirectURL:redirectURL delegate:delegate];
+    VENAuthViewController *authVC = [[VENAuthViewController alloc] initWithClientId:clientID clientSecret:clientSecret scopes:scopes reponseType:responseType redirectURL:redirectURL delegate:delegate];
 
-    return authViewController;
+    return authVC;
 }
 
 

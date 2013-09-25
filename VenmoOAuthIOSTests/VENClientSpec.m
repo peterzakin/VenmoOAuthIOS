@@ -5,6 +5,11 @@
 SpecBegin(VENClient)
 
 describe(@"VENClient public header methods", ^{
+
+    beforeAll(^{
+
+    });
+
     it(@"should make a shared client", ^{
         VENClient *client = [VENClient sharedClient];
         EXP_expect(client).toNot.beNil;

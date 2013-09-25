@@ -7,9 +7,23 @@
 @property (strong, nonatomic) UIWebView *webView;
 @property (strong, nonatomic) NSString* clientId;
 @property (strong, nonatomic) NSString* clientSecret;
-@property (strong, nonatomic) NSSet *scopes;
+@property (assign, nonatomic) VENAccessScope scopes;
 @property (assign, nonatomic) VENResponseType responseType;
 @property (strong, nonatomic) NSURL *redirectURL;
+
++ (NSString *)stringForResponseType:(VENResponseType)responseType;
+
++ (NSSet *)setForScopes:(VENAccessScope)scopes;
+
+- (NSURL *)authorizationURL;
+
+- (id)initWithClientId:(NSString *)clientId
+          clientSecret:(NSString *)clientSecret
+                scopes:(VENAccessScope)scopes
+           reponseType:(VENResponseType)responseType
+           redirectURL:(NSURL *)redirectURL
+              delegate:(id<VENAuthViewControllerDelegate>)delegate;
+
 
 @end
 

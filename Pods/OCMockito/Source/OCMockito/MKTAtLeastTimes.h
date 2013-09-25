@@ -1,6 +1,6 @@
 //
 //  OCMockito - MKTAtLeastTimes.h
-//  Copyright 2012 Jonathan M. Reid. See LICENSE.txt
+//  Copyright 2013 Jonathan M. Reid. See LICENSE.txt
 //  
 //  Created by Markus Gasser on 18.04.12.
 //  Source: https://github.com/jonreid/OCMockito
@@ -12,7 +12,7 @@
 
 @interface MKTAtLeastTimes : NSObject <MKTVerificationMode>
 
-+ (id)timesWithMinimumCount:(NSUInteger)minimumExpectedNumberOfInvocations;
-- (id)initWithMinimumCount:(NSUInteger)minimumExpectedNumberOfInvocations;
++ (instancetype)timesWithMinimumCount:(NSUInteger)minimumExpectedNumberOfInvocations;
+- (instancetype)initWithMinimumCount:(NSUInteger)minimumExpectedNumberOfInvocations;
 
 @end
