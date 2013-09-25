@@ -12,7 +12,7 @@
     return (responseType == VENResponseTypeCode) ? @"code" : @"token";
 }
 
-+ (NSSet *)setForScopes:(VENAccessScope)scopes
++ (NSString *)stringForScopes:(VENAccessScope)scopes
 {
     NSMutableSet *set = [NSMutableSet setWithCapacity:4];
     if (scopes & VENAccessScopeFeed) {
@@ -27,7 +27,8 @@
     if (scopes & VENAccessScopePayments) {
         [set addObject:@"make_payments"];
     }
-    return set;
+    NSArray *sorted = [set.allObjects sortedArrayUsingSelector:@selector(caseInsensitiveCompare:)];
+    return [sorted componentsJoinedByString:@","];
 }
 
 
@@ -52,8 +53,7 @@
 
 - (NSURL *)authorizationURL
 {
-    NSSet *scopesSet = [VENAuthViewController setForScopes:self.scopes];
-    NSString *scopesString = [scopesSet.allObjects componentsJoinedByString:@","];
+    NSString *scopesString = [VENAuthViewController stringForScopes:self.scopes];
     return [NSURL URLWithString:[NSString stringWithFormat:@"%@oauth/authorize?client_id=%@&scope=%@&response_type=%@",
                                  API_BASE_URL, self.clientId, scopesString, [VENAuthViewController stringForResponseType:self.responseType]]];
 }

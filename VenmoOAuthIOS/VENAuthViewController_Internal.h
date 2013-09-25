@@ -13,7 +13,7 @@
 
 + (NSString *)stringForResponseType:(VENResponseType)responseType;
 
-+ (NSSet *)setForScopes:(VENAccessScope)scopes;
++ (NSString *)stringForScopes:(VENAccessScope)scopes;
 
 - (NSURL *)authorizationURL;
 
