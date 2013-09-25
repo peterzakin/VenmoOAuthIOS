@@ -37,7 +37,7 @@
                 scopes:(VENAccessScope)scopes
            reponseType:(VENResponseType)responseType
            redirectURL:(NSURL *)redirectURL
-              delegate:(id<VENAuthViewControllerDelegate>)delegate
+              delegate:(id<VENLoginViewControllerDelegate>)delegate
 {
     self = [super init];
     if (self) {
@@ -54,8 +54,7 @@
 - (NSURL *)authorizationURL
 {
     NSString *scopesString = [VENLoginViewController stringForScopes:self.scopes];
-    return [NSURL URLWithString:[NSString stringWithFormat:@"%@oauth/authorize?client_id=%@&scope=%@&response_type=%@",
-                                 API_BASE_URL, self.clientId, scopesString, [VENLoginViewController stringForResponseType:self.responseType]]];
+    return [NSURL URLWithString:[NSString stringWithFormat:@"%@oauth/authorize?client_id=%@&scope=%@&response_type=%@", API_BASE_URL, self.clientId, scopesString, [VENLoginViewController stringForResponseType:self.responseType]]];
 }
 
 - (void)viewDidLoad

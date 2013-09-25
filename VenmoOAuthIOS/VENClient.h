@@ -1,11 +1,11 @@
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 #import "VENDefines.h"
+#import "VENLoginViewController.h"
 
-@protocol VENClientDelegate, VENAuthViewControllerDelegate;
-@class VENAuthViewController;
+@protocol VENClientDelegate;
 
-@interface VENClient : NSObject
+@interface VENClient : NSObject <VENLoginViewControllerDelegate>
 
 @property (readonly, nonatomic, strong) NSString *clientID;
 @property (readonly, nonatomic, strong) NSString *clientSecret;
@@ -21,19 +21,7 @@
            redirectURL:(NSURL *)redirectURL
               delegate:(id<VENClientDelegate>)delegate;
 
-
-//// remove this
-+ (VENClient *)sharedClient;
-///////
-////// refactor this
-+ (VENAuthViewController *)OAuthViewControllerWithClientID:(NSString *)clientID
-                                              clientSecret:(NSString *)clientSecret
-                                                    scopes:(VENAccessScope)scopes
-                                              responseType:(VENResponseType)responseType
-                                               redirectURL:(NSURL *)redirectURL
-                                                  delegate:(id<VENAuthViewControllerDelegate>)delegate;
-/////////
-
+- (BOOL)authorize;
 
 @end
 

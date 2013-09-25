@@ -20,8 +20,6 @@
 
 @implementation VENClient
 
-
-
 - (id)initWithClientID:(NSString *)clientID
           clientSecret:(NSString *)clientSecret
                 scopes:(VENAccessScope)scopes
@@ -42,31 +40,19 @@
     return self;
 }
 
-////// remove
-+ (VENClient *)sharedClient
+- (BOOL)authorize
 {
-    static VENClient *_sharedClient = nil;
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        _sharedClient = [[self alloc] init];
-        _sharedClient.baseURL = [NSURL URLWithString:API_BASE_URL];
-        _sharedClient.operationQueue = [[NSOperationQueue alloc] init];
-        [_sharedClient.operationQueue setMaxConcurrentOperationCount:NSOperationQueueDefaultMaxConcurrentOperationCount];
-    });
-    return _sharedClient;
+    VENLoginViewController *loginVC = [[VENLoginViewController alloc] initWithClientId:self.clientID clientSecret:self.clientSecret scopes:self.scopes reponseType:self.responseType redirectURL:self.redirectURL delegate:self];
+    loginVC.delegate = self;
+    [[[UIApplication sharedApplication] keyWindow].rootViewController presentViewController:loginVC animated:YES completion:nil];
+    return YES;
 }
 
-//////// refactor
-+ (VENLoginViewController *)OAuthViewControllerWithClientID:(NSString *)clientID
-                                              clientSecret:(NSString *)clientSecret
-                                                    scopes:(VENAccessScope)scopes
-                                              responseType:(VENResponseType)responseType
-                                               redirectURL:(NSURL *)redirectURL
-                                                  delegate:(id<VENLoginViewControllerDelegate>)delegate
-{
-    VENLoginViewController *loginVC = [[VENLoginViewController alloc] initWithClientId:clientID clientSecret:clientSecret scopes:scopes reponseType:responseType redirectURL:redirectURL delegate:delegate];
+#pragma mark - VENLoginViewControllerDelegate
 
-    return loginVC;
+- (void)loginViewController:(VENLoginViewController *)loginViewController finishedWithAccessToken:(NSString *)accessToken error:(NSError *)error
+{
+    [loginViewController dismissViewControllerAnimated:YES completion:nil];
 }
 
 

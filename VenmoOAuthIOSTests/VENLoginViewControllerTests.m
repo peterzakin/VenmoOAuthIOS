@@ -8,7 +8,7 @@
 
 @property (nonatomic, strong) VENLoginViewController *tokenAuthVC;
 @property (nonatomic, strong) VENLoginViewController *codeAuthVC;
-@property (nonatomic, strong) UIViewController <VENAuthViewControllerDelegate> *mockAuthDelegate;
+@property (nonatomic, strong) UIViewController <VENLoginViewControllerDelegate> *mockLoginDelegate;
 
 @end
 
@@ -19,19 +19,19 @@
     [super setUp];
 
 
-    self.mockAuthDelegate = mockObjectAndProtocol([UIViewController class], @protocol(VENLoginViewControllerDelegate));
+    self.mockLoginDelegate = mockObjectAndProtocol([UIViewController class], @protocol(VENLoginViewControllerDelegate));
     self.tokenAuthVC = [[VENLoginViewController alloc] initWithClientId:CLIENT_ID
                                                       clientSecret:CLIENT_SECRET
                                                             scopes:SCOPES
                                                        reponseType:VENResponseTypeToken
                                                        redirectURL:REDIRECT_URL
-                                                          delegate:self.mockAuthDelegate];
+                                                          delegate:self.mockLoginDelegate];
     self.codeAuthVC = [[VENLoginViewController alloc] initWithClientId:CLIENT_ID
                                                           clientSecret:CLIENT_SECRET
                                                                 scopes:SCOPES
                                                            reponseType:VENResponseTypeCode
                                                            redirectURL:REDIRECT_URL
-                                                              delegate:self.mockAuthDelegate];
+                                                              delegate:self.mockLoginDelegate];
 
 }
 
@@ -74,7 +74,7 @@
     EXP_expect(self.tokenAuthVC.responseType).to.equal(VENResponseTypeToken);
     EXP_expect(self.codeAuthVC.responseType).to.equal(VENResponseTypeCode);
     EXP_expect(self.tokenAuthVC.redirectURL).to.equal(REDIRECT_URL);
-    EXP_expect(self.tokenAuthVC.delegate).to.equal(self.mockAuthDelegate);
+    EXP_expect(self.tokenAuthVC.delegate).to.equal(self.mockLoginDelegate);
 }
 
 - (void)testAuthorizationURL
@@ -105,13 +105,13 @@
     NSString *requestString = [NSString stringWithFormat:@"%@/?access_token=%@", self.tokenAuthVC.redirectURL, TEST_TOKEN];
     NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:requestString]];
     [self.tokenAuthVC webView:self.tokenAuthVC.webView shouldStartLoadWithRequest:request navigationType:UIWebViewNavigationTypeOther];
-    [verify(self.mockAuthDelegate) loginViewController:self.tokenAuthVC finishedWithAccessToken:TEST_TOKEN error:nil];
+    [verify(self.mockLoginDelegate) loginViewController:self.tokenAuthVC finishedWithAccessToken:TEST_TOKEN error:nil];
 
     // VENResponseTypeCode
     NSString *requestString2 = [NSString stringWithFormat:@"%@/?code=%@", self.codeAuthVC.redirectURL, TEST_TOKEN];
     NSURLRequest *request2 = [NSURLRequest requestWithURL:[NSURL URLWithString:requestString2]];
     [self.codeAuthVC webView:self.codeAuthVC.webView shouldStartLoadWithRequest:request2 navigationType:UIWebViewNavigationTypeOther];
-    [verify(self.mockAuthDelegate) loginViewController:self.codeAuthVC finishedWithAccessToken:(NSString *)anything() error:nil];
+    [verify(self.mockLoginDelegate) loginViewController:self.codeAuthVC finishedWithAccessToken:(NSString *)anything() error:nil];
 }
 
 @end

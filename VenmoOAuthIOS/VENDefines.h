@@ -17,5 +17,5 @@ typedef NS_OPTIONS(NSUInteger, VENAccessScope) {
 // testing
 #define CLIENT_ID @"1405"
 #define CLIENT_SECRET @"H537ZNzLZufvwApCbgQEpqhBYjBjbmtD"
-#define SCOPES VENAccessScopeFriends | VENAccessScopeProfile | VENAccessScopeFriends | VENAccessScopePayments
+#define SCOPES VENAccessScopeFriends | VENAccessScopeProfile
 #define REDIRECT_URL [NSURL URLWithString:@"http://strangelines.com"]

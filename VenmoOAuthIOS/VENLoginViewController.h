@@ -1,6 +1,5 @@
 #import <UIKit/UIKit.h>
 #import "VENDefines.h"
-#import "VENClient.h"
 
 @protocol VENLoginViewControllerDelegate;
 
@@ -31,7 +30,7 @@
 
 @protocol VENLoginViewControllerDelegate
 
-- (void)loginViewController:(VENLoginViewController *)authViewController
+- (void)loginViewController:(VENLoginViewController *)loginViewController
    finishedWithAccessToken:(NSString *)accessToken
                      error:(NSError *)error;
 

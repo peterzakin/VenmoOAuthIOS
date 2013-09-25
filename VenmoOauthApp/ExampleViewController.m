@@ -37,13 +37,8 @@
 }
 
 - (IBAction)logInButtonAction:(id)sender {
-    VENLoginViewController *authVC = [VENClient OAuthViewControllerWithClientID:CLIENT_ID
-                                                                  clientSecret:CLIENT_SECRET
-                                                                        scopes:VENAccessScopeFriends | VENAccessScopeProfile | VENAccessScopeFriends | VENAccessScopePayments
-                                                                  responseType:VENResponseTypeToken
-                                                                   redirectURL:REDIRECT_URL
-                                                                      delegate:self];
-    [self presentViewController:(UIViewController *)authVC animated:YES completion:nil];
+    VENClient *client = [[VENClient alloc] initWithClientID:CLIENT_ID clientSecret:CLIENT_SECRET scopes:SCOPES responseType:VENResponseTypeToken redirectURL:REDIRECT_URL delegate:self];
+    [client authorize];
 }
 
 #pragma mark - VENAuthViewControllerDelegate
