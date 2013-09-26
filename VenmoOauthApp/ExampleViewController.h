@@ -3,7 +3,7 @@
 #import "VENLoginViewController.h"
 #import "VENClient.h"
 
-@interface ExampleViewController : UIViewController <VENClientDelegate>
+@interface ExampleViewController : UIViewController <VENLoginViewControllerDelegate>
 
 @property (weak, nonatomic) IBOutlet UILabel *accessTokenLabel;
 

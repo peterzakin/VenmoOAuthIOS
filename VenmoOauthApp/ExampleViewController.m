@@ -1,13 +1,5 @@
-//
-//  ExampleViewController.m
-//  VenmoOAuthIOS
-//
-//  Created by Ben Guo on 9/24/13.
-//  Copyright (c) 2013 Venmo. All rights reserved.
-//
-
 #import "ExampleViewController.h"
-#import "VENClient.h"
+#import "VENLoginViewController.h"
 
 @interface ExampleViewController ()
 
@@ -37,15 +29,15 @@
 }
 
 - (IBAction)logInButtonAction:(id)sender {
-    VENClient *client = [[VENClient alloc] initWithClientID:CLIENT_ID clientSecret:CLIENT_SECRET scopes:SCOPES responseType:VENResponseTypeToken redirectURL:REDIRECT_URL delegate:self];
-    [client authorize];
+    VENLoginViewController *loginVC = [[VENLoginViewController alloc] initWithClientId:CLIENT_ID clientSecret:CLIENT_SECRET scopes:SCOPES reponseType:VENResponseTypeToken redirectURL:REDIRECT_URL delegate:self];
+    [self presentViewController:loginVC animated:YES completion:nil];
 }
 
 #pragma mark - VENAuthViewControllerDelegate
 
-- (void)authViewController:(VENLoginViewController *)authViewController finishedWithAccessToken:(NSString *)accessToken error:(NSError *)error
+- (void)loginViewController:(VENLoginViewController *)loginViewController finishedWithAccessToken:(NSString *)accessToken error:(NSError *)error
 {
-    [authViewController dismissViewControllerAnimated:YES completion:nil];
+    [loginViewController dismissViewControllerAnimated:YES completion:nil];
     [[self accessTokenLabel] setText:accessToken];
 }
 

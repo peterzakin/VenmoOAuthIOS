@@ -63,10 +63,20 @@
     self.view.backgroundColor = [UIColor whiteColor];
 
     CGFloat statusBarHeight = [UIApplication sharedApplication].statusBarFrame.size.height;
+    UIToolbar *toolBar = [[UIToolbar alloc] init];
+    toolBar.items = @[[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancelButtonAction)]];
+    CGFloat toolBarHeight = 44;
+    toolBar.frame = CGRectMake(0, 0, self.view.frame.size.width, statusBarHeight + toolBarHeight);
+    [self.view addSubview:toolBar];
+
+
+
+
+
     CGRect webViewFrame = CGRectMake(0,
-                                     statusBarHeight,
+                                     statusBarHeight + toolBarHeight,
                                      self.view.bounds.size.width,
-                                     self.view.bounds.size.height - statusBarHeight);
+                                     self.view.bounds.size.height - statusBarHeight - toolBarHeight);
     self.webView = [[UIWebView alloc] initWithFrame:webViewFrame];
     self.webView.delegate = self;
     [self.view addSubview:self.webView];
@@ -78,6 +88,13 @@
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+#pragma mark - Actions
+
+- (void)cancelButtonAction
+{
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 #pragma mark - UIWebViewDelegate
