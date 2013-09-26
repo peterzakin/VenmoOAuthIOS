@@ -32,8 +32,6 @@
 		EB409F6A17F1F46F004EA769 /* ExampleViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EB409F6817F1F46F004EA769 /* ExampleViewController.m */; };
 		EB409F6B17F1F46F004EA769 /* ExampleViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = EB409F6917F1F46F004EA769 /* ExampleViewController.xib */; };
 		EB409F7417F2285A004EA769 /* VenmoOauthAppTests.m in Sources */ = {isa = PBXBuildFile; fileRef = EB409F7317F2285A004EA769 /* VenmoOauthAppTests.m */; };
-		EBB07D4917F396B200695803 /* VENRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = EBB07D4817F396B200695803 /* VENRequest.m */; };
-		EBB07D4B17F396B200695803 /* VENRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = EBB07D4817F396B200695803 /* VENRequest.m */; };
 		EBC957C917F24596008F2620 /* VENLoginViewController.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 1B3256E417F1045D00CEE3C2 /* VENLoginViewController.h */; };
 		EBDED3E617F33FC100BB3B0F /* VENLoginViewControllerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = EBDED3E517F33FC100BB3B0F /* VENLoginViewControllerTests.m */; };
 		EBDED3E817F34B1300BB3B0F /* VENClientTests.m in Sources */ = {isa = PBXBuildFile; fileRef = EBDED3E717F34B1300BB3B0F /* VENClientTests.m */; };
@@ -108,8 +106,6 @@
 		EB409F6917F1F46F004EA769 /* ExampleViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ExampleViewController.xib; sourceTree = "<group>"; };
 		EB409F6C17F21B8C004EA769 /* VENDefines.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VENDefines.h; sourceTree = "<group>"; };
 		EB409F7317F2285A004EA769 /* VenmoOauthAppTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VenmoOauthAppTests.m; sourceTree = "<group>"; };
-		EBB07D4717F396B200695803 /* VENRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VENRequest.h; path = VenmoOAuthiOS/VENRequest.h; sourceTree = SOURCE_ROOT; };
-		EBB07D4817F396B200695803 /* VENRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VENRequest.m; path = VenmoOAuthiOS/VENRequest.m; sourceTree = SOURCE_ROOT; };
 		EBDED3E317F33EF200BB3B0F /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
 		EBDED3E517F33FC100BB3B0F /* VENLoginViewControllerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VENLoginViewControllerTests.m; path = VenmoOAuthiOSTests/VENLoginViewControllerTests.m; sourceTree = SOURCE_ROOT; };
 		EBDED3E717F34B1300BB3B0F /* VENClientTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VENClientTests.m; path = VenmoOAuthiOSTests/VENClientTests.m; sourceTree = SOURCE_ROOT; };
@@ -203,8 +199,6 @@
 			isa = PBXGroup;
 			children = (
 				EB409F6C17F21B8C004EA769 /* VENDefines.h */,
-				EBB07D4717F396B200695803 /* VENRequest.h */,
-				EBB07D4817F396B200695803 /* VENRequest.m */,
 				1B3256E417F1045D00CEE3C2 /* VENLoginViewController.h */,
 				1B3256E517F1045D00CEE3C2 /* VENLoginViewController.m */,
 				1B3256BD17F0FCDA00CEE3C2 /* VENClient.h */,
@@ -468,7 +462,6 @@
 			files = (
 				1B3256E617F1045D00CEE3C2 /* VENLoginViewController.m in Sources */,
 				1B3256C017F0FCDA00CEE3C2 /* VENClient.m in Sources */,
-				EBB07D4917F396B200695803 /* VENRequest.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -486,7 +479,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				EB409F6A17F1F46F004EA769 /* ExampleViewController.m in Sources */,
-				EBB07D4B17F396B200695803 /* VENRequest.m in Sources */,
 				1B3256FB17F1074C00CEE3C2 /* AppDelegate.m in Sources */,
 				1B3256F717F1074C00CEE3C2 /* main.m in Sources */,
 			);

@@ -6,5 +6,7 @@
 @interface ExampleViewController : UIViewController <VENLoginViewControllerDelegate>
 
 @property (weak, nonatomic) IBOutlet UILabel *accessTokenLabel;
+@property (weak, nonatomic) IBOutlet UITextView *textView;
+@property (nonatomic, strong) VENClient *client;
 
 @end

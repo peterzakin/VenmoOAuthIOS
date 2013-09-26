@@ -46,7 +46,7 @@
         self.scopes = scopes;
         self.responseType = responseType;
         self.redirectURL = redirectURL;
-        self.delegate = delegate;
+        self.delegate = delegate; 
     }
     return self;
 }

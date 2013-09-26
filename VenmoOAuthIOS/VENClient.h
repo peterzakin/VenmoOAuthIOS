@@ -5,30 +5,26 @@
 
 @protocol VENClientDelegate;
 
-@interface VENClient : NSObject <VENLoginViewControllerDelegate>
+@interface VENClient : NSObject
 
-@property (readonly, nonatomic, strong) NSString *clientID;
-@property (readonly, nonatomic, strong) NSString *clientSecret;
-@property (readonly, nonatomic, assign) VENAccessScope scopes;
-@property (readonly, nonatomic, assign) VENResponseType responseType;
-@property (readonly, nonatomic, strong) NSURL *redirectURL;
-@property (nonatomic, weak) id<VENClientDelegate> delegate;
+@property (readonly, nonatomic, strong) NSURL *baseURL;
+@property (readonly, nonatomic, strong) NSOperationQueue *operationQueue;
+@property (readonly, nonatomic, strong) NSString *accessToken;
+@property (nonatomic, strong) id<VENClientDelegate> delegate;
 
-- (id)initWithClientID:(NSString *)clientID
-          clientSecret:(NSString *)clientSecret
-                scopes:(VENAccessScope)scopes
-          responseType:(VENResponseType)responseType
-           redirectURL:(NSURL *)redirectURL
-              delegate:(id<VENClientDelegate>)delegate;
+- (id)initWithAccessToken:(NSString *)accessToken;
 
-- (BOOL)authorize;
+- (void)getPath:(NSString *)path
+     parameters:(NSDictionary *)parameters
+completionHandler:(void(^)(NSURLResponse *response, NSDictionary *json, NSError *connectionError))handler;
+
+- (void)postPath:(NSString *)path
+      parameters:(NSDictionary *)parameters
+completionHandler:(void(^)(NSURLResponse *response, NSDictionary *json, NSError *connectionError))handler;
 
 @end
 
-@protocol VENClientDelegate <NSObject>
-@optional
+@protocol VENClientDelegate
 
-- (void)clientDidAuthorize:(VENClient *)client;
-- (void)clientDidNotAuthorize:(VENClient *)client;
 
 @end

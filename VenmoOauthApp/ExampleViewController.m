@@ -19,18 +19,35 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    // Do any additional setup after loading the view from its nib.
 }
 
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
 }
 
 - (IBAction)logInButtonAction:(id)sender {
     VENLoginViewController *loginVC = [[VENLoginViewController alloc] initWithClientId:CLIENT_ID clientSecret:CLIENT_SECRET scopes:SCOPES reponseType:VENResponseTypeToken redirectURL:REDIRECT_URL delegate:self];
     [self presentViewController:loginVC animated:YES completion:nil];
+}
+
+- (IBAction)testButtonAction:(id)sender {
+    if (self.client) {
+        [self.client getPath:@"/me"
+                  parameters:nil
+           completionHandler:^(NSURLResponse *response, NSDictionary *json, NSError *connectionError) {
+               if (json) {
+                   self.textView.text = [json description];
+               } else {
+                   self.textView.text = [connectionError debugDescription];
+               }
+        }];
+    }
+}
+
+- (void)updateTextView:(NSDictionary *)json
+{
+    self.textView.text = [json description];
 }
 
 #pragma mark - VENAuthViewControllerDelegate
@@ -39,6 +56,7 @@
 {
     [loginViewController dismissViewControllerAnimated:YES completion:nil];
     [[self accessTokenLabel] setText:accessToken];
+    self.client = [[VENClient alloc] initWithAccessToken:accessToken];
 }
 
 @end

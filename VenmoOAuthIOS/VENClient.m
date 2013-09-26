@@ -1,60 +1,115 @@
 #import "VENClient.h"
 #import "VENLoginViewController.h"
 
+static NSString * percentEscapedQueryStringFromStringWithEncoding(NSString *string, NSStringEncoding encoding) {
+    static NSString * const kAFCharactersToBeEscaped = @":/?&=;+!@#$()~',*";
+    static NSString * const kAFCharactersToLeaveUnescaped = @"[].";
+
+	return (__bridge_transfer  NSString *)CFURLCreateStringByAddingPercentEscapes(kCFAllocatorDefault, (__bridge CFStringRef)string, (__bridge CFStringRef)kAFCharactersToLeaveUnescaped, (__bridge CFStringRef)kAFCharactersToBeEscaped, CFStringConvertNSStringEncodingToEncoding(encoding));
+}
+
+NSString *queryStringFromParameters(NSDictionary *parameters) {
+    NSMutableArray *mutableQueryStringComponents = [NSMutableArray array];
+    NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"description" ascending:YES selector:@selector(caseInsensitiveCompare:)];
+    for (id key in [parameters.allKeys sortedArrayUsingDescriptors:@[sortDescriptor]]) {
+        id value = parameters[key];
+        if (value) {
+            [mutableQueryStringComponents addObject:[NSString stringWithFormat:@"%@=%@",
+                                                     percentEscapedQueryStringFromStringWithEncoding(key, NSUTF8StringEncoding),
+                                                     percentEscapedQueryStringFromStringWithEncoding(value, NSUTF8StringEncoding)]];
+        }
+    }
+    return [mutableQueryStringComponents componentsJoinedByString:@"&"];
+}
+
 @interface VENClient ()
 
-///// move these
 @property (readwrite, nonatomic, strong) NSURL *baseURL;
 @property (readwrite, nonatomic, strong) NSOperationQueue *operationQueue;
-/////
-
-
-@property (readwrite, nonatomic, strong) NSString *clientID;
-@property (readwrite, nonatomic, strong) NSString *clientSecret;
-@property (readwrite, nonatomic, assign) VENAccessScope scopes;
-@property (readwrite, nonatomic, assign) VENResponseType responseType;
-@property (readwrite, nonatomic, strong) NSURL *redirectURL;
-
+@property (readwrite, nonatomic, strong) NSString *accessToken;
 
 @end
 
 @implementation VENClient
 
-- (id)initWithClientID:(NSString *)clientID
-          clientSecret:(NSString *)clientSecret
-                scopes:(VENAccessScope)scopes
-          responseType:(VENResponseType)responseType
-           redirectURL:(NSURL *)redirectURL
-              delegate:(id<VENClientDelegate>)delegate
+- (id)initWithAccessToken:(NSString *)accessToken
 {
-    NSParameterAssert(clientID != nil && clientSecret != nil && redirectURL != nil);
     self = [super init];
     if (self) {
-        self.clientID = clientID;
-        self.clientSecret = clientSecret;
-        self.scopes = scopes;
-        self.responseType = responseType;
-        self.redirectURL = redirectURL;
-        self.delegate = delegate;
+        self.baseURL = [NSURL URLWithString:API_BASE_URL];
+        self.accessToken = accessToken;
+        self.operationQueue = [[NSOperationQueue alloc] init];
+        self.operationQueue.maxConcurrentOperationCount = NSOperationQueueDefaultMaxConcurrentOperationCount;
     }
     return self;
 }
 
-- (BOOL)authorize
+- (NSMutableURLRequest *)requestWithMethod:(NSString *)method
+                                      path:(NSString *)path
+                                parameters:(NSDictionary *)parameters
 {
-    VENLoginViewController *loginVC = [[VENLoginViewController alloc] initWithClientId:self.clientID clientSecret:self.clientSecret scopes:self.scopes reponseType:self.responseType redirectURL:self.redirectURL delegate:self];
-    loginVC.delegate = self;
-    [[[UIApplication sharedApplication] keyWindow].rootViewController presentViewController:loginVC animated:YES completion:nil];
-    return YES;
+    NSParameterAssert(method);
+
+    if (!path) {
+        path = @"";
+    }
+
+    NSURL *url = [NSURL URLWithString:path relativeToURL:self.baseURL];
+	NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:url];
+    [request setHTTPMethod:method];
+
+    NSMutableDictionary *newParams = [NSMutableDictionary dictionaryWithDictionary:@{@"access_token" : self.accessToken}];
+    if (!parameters) {
+        parameters = newParams;
+    } else {
+        [newParams addEntriesFromDictionary:parameters];
+        parameters = newParams;
+    }
+
+    url = [NSURL URLWithString:[[url absoluteString] stringByAppendingFormat:[path rangeOfString:@"?"].location == NSNotFound ? @"?%@" : @"&%@", queryStringFromParameters(parameters)]];
+    [request setURL:url];
+
+	return request;
 }
 
-#pragma mark - VENLoginViewControllerDelegate
-
-- (void)loginViewController:(VENLoginViewController *)loginViewController finishedWithAccessToken:(NSString *)accessToken error:(NSError *)error
+- (void)sendAsyncRequest:(NSURLRequest *)request
+       completionHandler:(void(^)(NSURLResponse *response, NSDictionary *json, NSError *connectionError))handler
 {
-    [loginViewController dismissViewControllerAnimated:YES completion:nil];
+    [NSURLConnection sendAsynchronousRequest:request
+                                       queue:self.operationQueue
+                           completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError) {
+                               NSDictionary *json = nil;
+                               NSError *error = nil;
+                               if (!connectionError){
+                                   json = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:&error];
+                               } else {
+                                   error = connectionError;
+                                   if (error.domain == NSURLErrorDomain
+                                       && error.code == NSURLErrorUserCancelledAuthentication) {
+
+                                   }
+                               }
+                               dispatch_async(dispatch_get_main_queue(), ^{
+                                   handler(response,json,error);
+                               });
+                           }];
 }
 
+- (void)getPath:(NSString *)path
+     parameters:(NSDictionary *)parameters
+completionHandler:(void(^)(NSURLResponse *response, NSDictionary *json, NSError *connectionError))handler
+{
+    NSURLRequest *request = [self requestWithMethod:@"GET" path:path parameters:parameters];
+    [self sendAsyncRequest:request completionHandler:handler];
+}
+
+- (void)postPath:(NSString *)path
+      parameters:(NSDictionary *)parameters
+completionHandler:(void(^)(NSURLResponse *response, NSDictionary *json, NSError *connectionError))handler
+{
+    NSURLRequest *request = [self requestWithMethod:@"POST" path:path parameters:parameters];
+    [self sendAsyncRequest:request completionHandler:handler];
+}
 
 
 @end
