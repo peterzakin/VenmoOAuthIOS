@@ -1,8 +1,13 @@
 #import <XCTest/XCTest.h>
 #import "VENTestBase.h"
-#import "VENClient_Internal.h"
+#import "VENClient.h"
+#import "VENLoginViewController.h"
+#define TEST_TOKEN @"12345"
+
 
 @interface VENClientTests : XCTestCase
+
+@property (strong, nonatomic) VENClient *client;
 
 @end
 
@@ -11,26 +16,21 @@
 - (void)setUp
 {
     [super setUp];
-    // Put setup code here; it will be run once, before the first test case.
+    self.client = [[VENClient alloc] initWithAccessToken:TEST_TOKEN];
 }
 
 - (void)tearDown
 {
-    // Put teardown code here; it will be run once, after the last test case.
     [super tearDown];
 }
 
-- (void)testSharedClient
+- (void)testInit
 {
-    VENClient *client = [VENClient sharedClient];
-    EXP_expect(client).toNot.beNil;
-    VENClient *client2 = [VENClient sharedClient];
-    EXP_expect(client).to.equal(client2);
+    EXP_expect(self.client.baseURL).to.equal([NSURL URLWithString:API_BASE_URL]);
+    EXP_expect(self.client.accessToken).to.equal(TEST_TOKEN);
+    EXP_expect(self.client.operationQueue).toNot.beNil;
+    EXP_expect(self.client.operationQueue.maxConcurrentOperationCount).to.equal(NSOperationQueueDefaultMaxConcurrentOperationCount);
 }
 
-- (void)testOAuthViewControllerInitialization
-{
-    
-}
 
 @end

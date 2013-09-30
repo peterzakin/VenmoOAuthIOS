@@ -1,13 +1,5 @@
-//
-//  ExampleViewController.m
-//  VenmoOAuthIOS
-//
-//  Created by Ben Guo on 9/24/13.
-//  Copyright (c) 2013 Venmo. All rights reserved.
-//
-
 #import "ExampleViewController.h"
-#import "VENClient.h"
+#import "VENLoginViewController.h"
 
 @interface ExampleViewController ()
 
@@ -27,31 +19,70 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    // Do any additional setup after loading the view from its nib.
 }
 
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+}
+
+- (void)showLoginViewController
+{
+    VENLoginViewController *loginVC = [[VENLoginViewController alloc] initWithClientId:CLIENT_ID clientSecret:CLIENT_SECRET scopes:SCOPES reponseType:VENResponseTypeToken redirectURL:REDIRECT_URL delegate:self];
+    [self presentViewController:loginVC animated:YES completion:nil];
 }
 
 - (IBAction)logInButtonAction:(id)sender {
-    VENAuthViewController *authVC = [VENClient OAuthViewControllerWithClientID:CLIENT_ID
-                                                                  clientSecret:CLIENT_SECRET
-                                                                        scopes:VENAccessScopeFriends | VENAccessScopeProfile | VENAccessScopeFriends | VENAccessScopePayments
-                                                                  responseType:VENResponseTypeToken
-                                                                   redirectURL:REDIRECT_URL
-                                                                      delegate:self];
-    [self presentViewController:(UIViewController *)authVC animated:YES completion:nil];
+    [self showLoginViewController];
 }
 
-#pragma mark - VENAuthViewControllerDelegate
+- (IBAction)postButtonAction:(id)sender {
+    if (self.client) {
+        [self.client postPath:@"/payments"
+                   parameters:@{@"user_id" : @"kishin",
+                                @"note" : @"test",
+                                @"amount" : @"0.01",
+                                @"audience" : @"friends"}
+            completionHandler:^(NSURLResponse *response, NSDictionary *json, NSError *connectionError) {
 
-- (void)authViewController:(VENAuthViewController *)authViewController finishedWithAccessToken:(NSString *)accessToken error:(NSError *)error
+            }];
+    }
+}
+
+- (IBAction)getButtonAction:(id)sender {
+    if (self.client) {
+        [self.client getPath:@"/me"
+                  parameters:nil
+           completionHandler:^(NSURLResponse *response, NSDictionary *json, NSError *connectionError) {
+               if (json) {
+                   self.textView.text = [json description];
+               } else {
+                   self.textView.text = [connectionError debugDescription];
+               }
+           }];
+    }
+}
+
+- (void)updateTextView:(NSDictionary *)json
 {
-    [authViewController dismissViewControllerAnimated:YES completion:nil];
+    self.textView.text = [json description];
+}
+
+#pragma mark - VENLoginViewControllerDelegate
+
+- (void)loginViewController:(VENLoginViewController *)loginViewController finishedWithAccessToken:(NSString *)accessToken error:(NSError *)error
+{
+    [loginViewController dismissViewControllerAnimated:YES completion:nil];
     [[self accessTokenLabel] setText:accessToken];
+    self.client = [[VENClient alloc] initWithAccessToken:accessToken];
+    self.client.delegate = self;
+}
+
+#pragma mark - VENClientDelegate
+
+- (void)request:(NSURLRequest *)request didFailWithAuthenticationError:(NSError *)error
+{
+    [self showLoginViewController];
 }
 
 @end

@@ -1,19 +1,22 @@
+#import <UIKit/UIKit.h>
 #import "VENDefines.h"
-#import "VENAuthViewController.h"
 
-@interface VENAuthViewController ()
+@protocol VENLoginViewControllerDelegate;
 
-@property (weak, nonatomic) id<VENAuthViewControllerDelegate> delegate;
+@interface VENLoginViewController : UIViewController <UIWebViewDelegate>
+
+@property (weak, nonatomic) id<VENLoginViewControllerDelegate> delegate;
 @property (strong, nonatomic) UIWebView *webView;
 @property (strong, nonatomic) NSString* clientId;
 @property (strong, nonatomic) NSString* clientSecret;
 @property (assign, nonatomic) VENAccessScope scopes;
 @property (assign, nonatomic) VENResponseType responseType;
 @property (strong, nonatomic) NSURL *redirectURL;
+@property (strong, nonatomic) UIToolbar *toolbar;
 
 + (NSString *)stringForResponseType:(VENResponseType)responseType;
 
-+ (NSSet *)setForScopes:(VENAccessScope)scopes;
++ (NSString *)stringForScopes:(VENAccessScope)scopes;
 
 - (NSURL *)authorizationURL;
 
@@ -22,8 +25,14 @@
                 scopes:(VENAccessScope)scopes
            reponseType:(VENResponseType)responseType
            redirectURL:(NSURL *)redirectURL
-              delegate:(id<VENAuthViewControllerDelegate>)delegate;
-
+              delegate:(id<VENLoginViewControllerDelegate>)delegate;
 
 @end
 
+@protocol VENLoginViewControllerDelegate
+
+- (void)loginViewController:(VENLoginViewController *)loginViewController
+   finishedWithAccessToken:(NSString *)accessToken
+                     error:(NSError *)error;
+
+@end

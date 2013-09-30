@@ -1,18 +1,18 @@
-#import "VENAuthViewController_Internal.h"
+#import "VENLoginViewController.h"
 #import <UIKit/UIKit.h>
 
-@interface VENAuthViewController ()
+@interface VENLoginViewController ()
 
 @end
 
-@implementation VENAuthViewController
+@implementation VENLoginViewController
 
 + (NSString *)stringForResponseType:(VENResponseType)responseType
 {
     return (responseType == VENResponseTypeCode) ? @"code" : @"token";
 }
 
-+ (NSSet *)setForScopes:(VENAccessScope)scopes
++ (NSString *)stringForScopes:(VENAccessScope)scopes
 {
     NSMutableSet *set = [NSMutableSet setWithCapacity:4];
     if (scopes & VENAccessScopeFeed) {
@@ -27,7 +27,8 @@
     if (scopes & VENAccessScopePayments) {
         [set addObject:@"make_payments"];
     }
-    return set;
+    NSArray *sorted = [set.allObjects sortedArrayUsingSelector:@selector(caseInsensitiveCompare:)];
+    return [sorted componentsJoinedByString:@","];
 }
 
 
@@ -36,7 +37,7 @@
                 scopes:(VENAccessScope)scopes
            reponseType:(VENResponseType)responseType
            redirectURL:(NSURL *)redirectURL
-              delegate:(id<VENAuthViewControllerDelegate>)delegate
+              delegate:(id<VENLoginViewControllerDelegate>)delegate
 {
     self = [super init];
     if (self) {
@@ -45,32 +46,42 @@
         self.scopes = scopes;
         self.responseType = responseType;
         self.redirectURL = redirectURL;
-        self.delegate = delegate;
+        self.delegate = delegate; 
     }
     return self;
 }
 
 - (NSURL *)authorizationURL
 {
-    NSSet *scopesSet = [VENAuthViewController setForScopes:self.scopes];
-    NSString *scopesString = [scopesSet.allObjects componentsJoinedByString:@","];
-    return [NSURL URLWithString:[NSString stringWithFormat:@"%@oauth/authorize?client_id=%@&scope=%@&response_type=%@",
-                                 API_BASE_URL, self.clientId, scopesString, [VENAuthViewController stringForResponseType:self.responseType]]];
+    NSString *scopesString = [VENLoginViewController stringForScopes:self.scopes];
+    return [NSURL URLWithString:[NSString stringWithFormat:@"%@oauth/authorize?client_id=%@&scope=%@&response_type=%@", API_BASE_URL, self.clientId, scopesString, [VENLoginViewController stringForResponseType:self.responseType]]];
 }
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    self.view.backgroundColor = [UIColor lightGrayColor];
-    
+    self.view.backgroundColor = [UIColor whiteColor];
+
     CGFloat statusBarHeight = [UIApplication sharedApplication].statusBarFrame.size.height;
-    CGRect webViewFrame = CGRectMake(0,
-                                     statusBarHeight,
-                                     self.view.bounds.size.width,
-                                     self.view.bounds.size.height - statusBarHeight);
-    self.webView = [[UIWebView alloc] initWithFrame:webViewFrame];
-    self.webView.delegate = self;
-    [self.view addSubview:self.webView];
+
+    CGFloat toolBarHeight = 44;
+    if (!self.toolbar) {
+        self.toolbar = [[UIToolbar alloc] init];
+        self.toolbar.items = @[[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancelButtonAction)]];
+        self.toolbar.frame = CGRectMake(0, 0, self.view.frame.size.width, statusBarHeight + toolBarHeight);
+        [self.view addSubview:self.toolbar];
+    }
+
+    if (!self.webView) {
+        CGRect webViewFrame = CGRectMake(0,
+                                         statusBarHeight + toolBarHeight,
+                                         self.view.bounds.size.width,
+                                         self.view.bounds.size.height - statusBarHeight - toolBarHeight);
+        self.webView = [[UIWebView alloc] initWithFrame:webViewFrame];
+        self.webView.delegate = self;
+        [self.view addSubview:self.webView];
+    }
+
     NSURL *authorizationURL = [self authorizationURL];
     [self.webView loadRequest:[NSURLRequest requestWithURL:authorizationURL]];
 }
@@ -79,6 +90,13 @@
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+#pragma mark - Actions
+
+- (void)cancelButtonAction
+{
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 #pragma mark - UIWebViewDelegate
@@ -110,7 +128,7 @@
                 if (!error) accessToken = [json objectForKey:@"access_token"];
             }
         }
-        [self.delegate authViewController:self finishedWithAccessToken:accessToken error:error];
+        [self.delegate loginViewController:self finishedWithAccessToken:accessToken error:error];
         return NO;
     }
     return YES;

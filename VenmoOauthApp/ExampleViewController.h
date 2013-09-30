@@ -1,16 +1,12 @@
-//
-//  ExampleViewController.h
-//  VenmoOAuthIOS
-//
-//  Created by Ben Guo on 9/24/13.
-//  Copyright (c) 2013 Venmo. All rights reserved.
-//
-
 #import <UIKit/UIKit.h>
 
-#import "VENAuthViewController.h"
+#import "VENLoginViewController.h"
+#import "VENClient.h"
 
-@interface ExampleViewController : UIViewController <VENAuthViewControllerDelegate>
+@interface ExampleViewController : UIViewController <VENLoginViewControllerDelegate, VENClientDelegate>
+
 @property (weak, nonatomic) IBOutlet UILabel *accessTokenLabel;
+@property (weak, nonatomic) IBOutlet UITextView *textView;
+@property (nonatomic, strong) VENClient *client;
 
 @end
