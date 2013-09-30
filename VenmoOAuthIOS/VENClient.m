@@ -58,16 +58,31 @@ NSString *queryStringFromParameters(NSDictionary *parameters) {
 	NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:url];
     [request setHTTPMethod:method];
 
-    NSMutableDictionary *newParams = [NSMutableDictionary dictionaryWithDictionary:@{@"access_token" : self.accessToken}];
+    NSMutableDictionary *tokenDict = [NSMutableDictionary dictionaryWithDictionary:@{@"access_token" : self.accessToken}];
     if (!parameters) {
-        parameters = newParams;
+        parameters = tokenDict;
     } else {
-        [newParams addEntriesFromDictionary:parameters];
-        parameters = newParams;
+        [tokenDict addEntriesFromDictionary:parameters];
+        parameters = tokenDict;
+    }
+    NSString *paramString = queryStringFromParameters(parameters);
+
+    NSError *error = nil;
+    NSString *charset = (__bridge NSString *)CFStringConvertEncodingToIANACharSetName(CFStringConvertNSStringEncodingToEncoding(NSUTF8StringEncoding));
+
+    if ([method isEqualToString:@"GET"] || [method isEqualToString:@"HEAD"] || [method isEqualToString:@"DELETE"]) {
+        url = [NSURL URLWithString:[[url absoluteString] stringByAppendingFormat:[path rangeOfString:@"?"].location == NSNotFound ? @"?%@" : @"&%@", paramString]];
+    } else {
+        [request setValue:[NSString stringWithFormat:@"application/x-www-form-urlencoded; charset=%@", charset] forHTTPHeaderField:@"Content-Type"];
+        [request setHTTPBody:[NSJSONSerialization dataWithJSONObject:parameters options:0 error:&error]];
+
     }
 
-    url = [NSURL URLWithString:[[url absoluteString] stringByAppendingFormat:[path rangeOfString:@"?"].location == NSNotFound ? @"?%@" : @"&%@", queryStringFromParameters(parameters)]];
     [request setURL:url];
+
+    if (error) {
+        NSLog(@"%@ %@: %@", [self class], NSStringFromSelector(_cmd), error);
+    }
 
 	return request;
 }
@@ -86,7 +101,9 @@ NSString *queryStringFromParameters(NSDictionary *parameters) {
                                    error = connectionError;
                                    if (error.domain == NSURLErrorDomain
                                        && error.code == NSURLErrorUserCancelledAuthentication) {
-
+                                       dispatch_async(dispatch_get_main_queue(), ^{
+                                           [self.delegate request:request didFailWithAuthenticationError:error];
+                                       });
                                    }
                                }
                                dispatch_async(dispatch_get_main_queue(), ^{

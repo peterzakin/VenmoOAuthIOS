@@ -63,23 +63,25 @@
     self.view.backgroundColor = [UIColor whiteColor];
 
     CGFloat statusBarHeight = [UIApplication sharedApplication].statusBarFrame.size.height;
-    UIToolbar *toolBar = [[UIToolbar alloc] init];
-    toolBar.items = @[[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancelButtonAction)]];
+
     CGFloat toolBarHeight = 44;
-    toolBar.frame = CGRectMake(0, 0, self.view.frame.size.width, statusBarHeight + toolBarHeight);
-    [self.view addSubview:toolBar];
+    if (!self.toolbar) {
+        self.toolbar = [[UIToolbar alloc] init];
+        self.toolbar.items = @[[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancelButtonAction)]];
+        self.toolbar.frame = CGRectMake(0, 0, self.view.frame.size.width, statusBarHeight + toolBarHeight);
+        [self.view addSubview:self.toolbar];
+    }
 
+    if (!self.webView) {
+        CGRect webViewFrame = CGRectMake(0,
+                                         statusBarHeight + toolBarHeight,
+                                         self.view.bounds.size.width,
+                                         self.view.bounds.size.height - statusBarHeight - toolBarHeight);
+        self.webView = [[UIWebView alloc] initWithFrame:webViewFrame];
+        self.webView.delegate = self;
+        [self.view addSubview:self.webView];
+    }
 
-
-
-
-    CGRect webViewFrame = CGRectMake(0,
-                                     statusBarHeight + toolBarHeight,
-                                     self.view.bounds.size.width,
-                                     self.view.bounds.size.height - statusBarHeight - toolBarHeight);
-    self.webView = [[UIWebView alloc] initWithFrame:webViewFrame];
-    self.webView.delegate = self;
-    [self.view addSubview:self.webView];
     NSURL *authorizationURL = [self authorizationURL];
     [self.webView loadRequest:[NSURLRequest requestWithURL:authorizationURL]];
 }

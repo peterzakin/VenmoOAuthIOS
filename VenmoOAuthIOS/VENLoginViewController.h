@@ -12,6 +12,7 @@
 @property (assign, nonatomic) VENAccessScope scopes;
 @property (assign, nonatomic) VENResponseType responseType;
 @property (strong, nonatomic) NSURL *redirectURL;
+@property (strong, nonatomic) UIToolbar *toolbar;
 
 + (NSString *)stringForResponseType:(VENResponseType)responseType;
 

@@ -26,5 +26,6 @@ completionHandler:(void(^)(NSURLResponse *response, NSDictionary *json, NSError 
 
 @protocol VENClientDelegate
 
+- (void)request:(NSURLRequest *)request didFailWithAuthenticationError:(NSError *)error;
 
 @end
